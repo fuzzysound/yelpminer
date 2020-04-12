@@ -30,7 +30,7 @@ python manage.py runserver
 ```
 
 Access to <http://localhost:8000>, and you will see the page below.
-
+<img src="static/yelpminer.png">
 Just check the item you want to put in query, and fill the inputs. Remember that inputs are enabled only when their corresponding checkboxes are checked.
 Then click the "Build Request" button and the request address will show up below. Click the "View on Browser" button to view response data on DRF browsable API.
 Note that if you uncheck the checkbox of any item, its input value won't be passed whether or not there is any value.
