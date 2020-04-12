@@ -2,8 +2,9 @@
 Yelpminer is a tool that helps build complex query for Elasticsearch with Web UI. The name is Yelpminer because this app is just for yelp dataset.
 
 ## Requirements
+- python >= 3.7.0
 - Django >= 3.0.0
-- django-rest-framework >= 3.0.0
+- django-rest-framework >= 3.11.0
 - Elasticsearch >= 7.6.0
 - Bower >= 1.8.8
 - Anaconda is recommended for virtual environment. See: [Virtual environments](https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/environments.html#virtual-environments)
