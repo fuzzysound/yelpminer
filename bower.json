@@ -1,0 +1,21 @@
+{
+  "name": "yelpminer",
+  "authors": [
+    "hyun1652 <hyun1652@gmail.com>"
+  ],
+  "description": "Yelpminer app",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47"
+  }
+}

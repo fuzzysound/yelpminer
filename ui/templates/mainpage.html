@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+{% load static %}
+{% load ui_extras %}
+
+{% block content %}
+    {{ select_data|json_script:"select-data" }}
+    {{ operator_map|json_script:"operator-map" }}
+    {{ choice_attributes|json_script:"choice-attributes" }}
+    <div class="row">
+        <div class="col-md-12">
+            <form>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <label class="ym-check-label form-check-label" for="business__name-checkbox">Business Name Contains</label>
+                        <input class="ym-check-input form-check-input" type="checkbox" id="business__name-checkbox">
+                    </div>
+                    <input type="text" class="form-control" id="business__name" disabled="true">
+                    <small class="form-text text-muted" id="business__name-help`">
+                        If searching with multiple keywords, write them in comma-separated form.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <label class="ym-check-label form-check-label" for="business__city-checkbox">City</label>
+                        <input class="ym-check-input form-check-input" type="checkbox" id="business__city-checkbox">
+                    </div>
+                    <select class="js-example-basic-single js-states form-control" id="business__city" disabled="true"></select>
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <label class="ym-check-label form-check-label" for="business__state-checkbox">State</label>
+                        <input class="ym-check-input form-check-input" type="checkbox" id="business__state-checkbox">
+                    </div>
+                    <select class="js-example-basic-single js-states form-control" id="business__state" disabled="true"></select>
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <label class="ym-check-label form-check-label" for="business__categories-checkbox">Categories</label>
+                        <input class="ym-check-input form-check-input" type="checkbox" id="business__categories-checkbox">
+                    </div>
+                    <select class="js-example-basic-multiple form-control" id="business__categories" multiple="multiple" disabled></select>
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <label class="ym-check-label form-check-label" for="business__stars-checkbox">Stars</label>
+                        <input class="ym-check-input form-check-input" type="checkbox" id="business__stars-checkbox">
+                    </div>
+                    <input type="hidden" class="range-slider" id="business__stars" value="0.0,5.0">
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <label class="ym-check-label form-check-label" for="business__is_open-checkbox">Currently Open?</label>
+                        <input class="ym-check-input form-check-input" type="checkbox" id="business__is_open-checkbox">
+                    </div>
+                    <select class="form-control col-1" id="business__is_open" disabled>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <label class="ym-check-label form-check-label" for="business__attributes-checkbox">Attributes</label>
+                        <input class="ym-check-input form-check-input" type="checkbox" id="business__attributes-checkbox">
+                    </div>
+                </div>
+                <div class="container" id="business__attributes" style="display:none">
+                    {% for attr, text in boolean_attributes.items %}
+                    {% if forloop|rowstart %}
+                    <div class="row">
+                    {% endif %}
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="form-check form-check-inline">
+                                    <label class="ym-check-label-small form-check-label" for="{{ attr|genattrid }}">{{ text }}</label>
+                                    <input class="ym-check-input form-check-input" type="checkbox" id="{{ attr|genattrid }}">
+                                </div>
+                            </div>
+                        </div>
+                    {% if forloop|rowend %}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% for attr, val in choice_attributes.items %}
+                    {% if forloop|rowstart %}
+                    <div class="row">
+                    {% endif %}
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="form-check form-check-inline">
+                                    <label class="ym-check-label-small form-check-label" for="{{ attr|gencheckboxid }}">{{ val.text }}</label>
+                                    <input class="ym-check-input form-check-input" type="checkbox" id="{{ attr|gencheckboxid }}">
+                                </div>
+                                {% for subattr, text in val.choice.items %}
+                                <div class="form-check">
+                                    <input class="form-check-input {{ attr|gencheckboxid }}" type="checkbox" value={{ subattr }} id="{{ subattr|gensubattrid:attr }}" disabled>
+                                    <label class="form-check-label" for="{{ subattr|gensubattrid:attr }}">
+                                        {{ text }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% if forloop|rowend %}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <label class="ym-check-label form-check-label" for="review-checkbox">Reviews</label>
+                        <input class="ym-check-input form-check-input" type="checkbox" id="review-checkbox">
+                    </div>
+                </div>
+                <div class="container" id="review" style="display:none">
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <label class="ym-check-label-small form-check-label" for="review__stars-checkbox">Stars</label>
+                            <input class="ym-check-input form-check-input" type="checkbox" id="review__stars-checkbox">
+                        </div>
+                        <input type="hidden" class="range-slider" id="review__stars" value="0.0,5.0">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <label class="ym-check-label-small form-check-label" for="review__text-checkbox">Review Text Contains</label>
+                            <input class="ym-check-input form-check-input" type="checkbox" id="review__text-checkbox">
+                        </div>
+                        <input type="text" class="form-control" id="review__text" disabled="true">
+                        <small class="form-text text-muted" id="review__text-help`">
+                            If searching with multiple keywords, write them in comma-separated form.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <label class="ym-check-label-small form-check-label" for="review__date-checkbox">Date</label>
+                            <input class="ym-check-input form-check-input" type="checkbox" id="review__date-checkbox">
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="review__date__gte">
+                                </div>
+                                <div class="col-1">
+                                    <p class="text-center font-weight-bold" style="font-size: 20px">
+                                        -
+                                    </p>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="review__date__lte">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="ym-check-label-small form-check-label">Maximum Number of Reviews per Business to Get</label>
+                        <input type="text" class="form-control col-2" id="num-reviews" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label class="ym-check-label-small form-check-label">Sort by</label>
+                        <select class="form-control col-3" id="review-sort-by">
+                            <option>Date</option>
+                            <option>Stars</option>
+                            <option>Useful</option>
+                            <option>Funny</option>
+                            <option>Cool</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <label class="ym-check-label form-check-label" for="tip-checkbox">Tips</label>
+                        <input class="ym-check-input form-check-input" type="checkbox" id="tip-checkbox">
+                    </div>
+                </div>
+                <div class="container" id="tip" style="display:none">
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <label class="ym-check-label-small form-check-label" for="tip__text-checkbox">Tip Text Contains</label>
+                            <input class="ym-check-input form-check-input" type="checkbox" id="tip__text-checkbox">
+                        </div>
+                        <input type="text" class="form-control" id="tip__text" disabled="true">
+                        <small class="form-text text-muted" id="tip__text-help`">
+                            If searching with multiple keywords, write them in comma-separated form.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <label class="ym-check-label-small form-check-label" for="tip__date-checkbox">Date</label>
+                            <input class="ym-check-input form-check-input" type="checkbox" id="tip__date-checkbox">
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="tip__date__gte">
+                                </div>
+                                <div class="col-1">
+                                    <p class="text-center font-weight-bold" style="font-size: 20px">
+                                        -
+                                    </p>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="tip__date__lte" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="ym-check-label-small form-check-label">Maximum Number of Tips per Business to Get</label>
+                        <input type="text" class="form-control col-2" id="num-tips" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label class="ym-check-label-small form-check-label">Sort by</label>
+                        <select class="form-control col-3" id="tip-sort-by">
+                            <option>Date</option>
+                            <option>Compliment Count</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <label class="ym-check-label form-check-label">Business Per Page</label>
+                    </div>
+                    <input type="text" class="form-control col-3" id="limit" value="10">
+                    <small class="form-text text-muted" id="limit-help`">
+                        The data will be served by page. This input controls the number of business per page.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="ym-check-label form-check-label">Sort by</label>
+                    <select class="form-control col-3" id="business-sort-by">
+                        <option>Stars</option>
+                        <option>Number of Reviews</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="container">
+            <button type="button" class="btn btn-primary btn-lg" id="build-request">Build Request</button>
+            <button type="button" class="btn btn-secondary btn-lg" id="view-on-browser">View on Browser</button>
+        </div>
+        <div class="container">
+            <p> </p>
+            <div class="form-row">
+                <div class="col-10">
+                    <input type="text" class="form-control" id="request" value="">
+                </div>
+                <div class="col">
+                    <button class="btn" data-clipboard-target="#request">
+                        <img src="{% static 'clippy.svg' %}" width=13 alt="Copy to clipboard">
+                    </button>
+                </div>
+            </div>
+            <script>
+                var bb = new ClipboardJS('.btn');
+            </script>
+            <p> </p>
+        </div>
+    </div>
+{% endblock %}
+{% block extrascript %}
+<script src="{% static 'select2_control.js' %}"></script>
+<script src="{% static 'range_control.js' %}"></script>
+<script src="{% static 'datetimepicker_control.js' %}"></script>
+<script src="{% static 'disabled_control.js' %}"></script>
+<script src="{% static 'display_control.js' %}"></script>
+<script src="{% static 'requestbuilder.js' %}"></script>
+{% endblock %}
