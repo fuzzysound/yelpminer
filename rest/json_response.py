@@ -51,7 +51,6 @@ class JSONResponseBuilder:
         """
         Get queried business data from Elasticsearch.
         """
-        print(query_data["business"]["query_dsl"].get_query())
         result = self.client.search(index="business",
                                     body=query_data["business"]["query_dsl"].get_query())
         self.total_count = int(result["hits"]["total"]["value"])
