@@ -4,3 +4,4 @@
 */migrations/*
 yelp-dataset/*
 bower_components/*
+.idea/*
